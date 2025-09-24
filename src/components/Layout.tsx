@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Globe } from 'lucide-react';
+import { Menu, X, Globe, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -45,15 +51,33 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
             {/* Language Switcher & Mobile Menu */}
             <div className="flex items-center space-x-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setLanguage(language === 'en' ? 'ja' : 'en')}
-                className="hidden md:flex items-center space-x-1"
-              >
-                <Globe className="h-4 w-4" />
-                <span className="text-sm">{language === 'en' ? '日本語' : 'English'}</span>
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="hidden md:flex items-center space-x-1"
+                  >
+                    <Globe className="h-4 w-4" />
+                    <span className="text-sm">{language === 'en' ? 'English' : '日本語'}</span>
+                    <ChevronDown className="h-3 w-3" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="z-50 bg-popover border border-border shadow-lg">
+                  <DropdownMenuItem 
+                    onClick={() => setLanguage('en')}
+                    className={`cursor-pointer ${language === 'en' ? 'bg-accent' : ''}`}
+                  >
+                    <span>English</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    onClick={() => setLanguage('ja')}
+                    className={`cursor-pointer ${language === 'ja' ? 'bg-accent' : ''}`}
+                  >
+                    <span>日本語</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
 
               {/* Mobile menu button */}
               <Button
